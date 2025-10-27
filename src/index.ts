@@ -15,9 +15,7 @@ app.onError((err, c) => {
       err.status as ContentfulStatusCode,
     );
   }
-
   console.error("Global error handler caught:", err); // Log the error if it's not known
-
   // For other errors, return a generic 500 response
   return c.json(
     {
@@ -33,11 +31,21 @@ const openapi = fromHono(app, {
   docs_url: "/",
   schema: {
     info: {
-      title: "My Awesome API",
-      version: "2.0.0",
-      description: "This is the documentation for my awesome API.",
+      title: "ArtyApp API",
+      version: "1.0.0",
+      description: "ArtyApp Backend API with Hono, D1, and Stripe integration.",
     },
   },
+});
+
+// Health check endpoint
+app.get("/health", (c) => {
+  return c.json({
+    status: "healthy",
+    service: "artyapp-backend",
+    timestamp: new Date().toISOString(),
+    database: "connected",
+  });
 });
 
 // Register Tasks Sub router
